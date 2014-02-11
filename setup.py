@@ -38,9 +38,9 @@ setup(
         "cern.jpymad",
         "cern.jpymad.tools",
     ],
+    install_requires=['numpy', 'py4j'],
     author='PyMAD developers',
     author_email='pymad@cern.ch',
-    install_requires=['numpy'],
     license='CERN Standard Copyright License',
     zip_safe=True,
 )

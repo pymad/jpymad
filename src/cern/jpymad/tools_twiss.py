@@ -22,8 +22,7 @@ Created on Nov 17, 2010
 '''
 from __future__ import absolute_import
 
-from .conversions import tofl
-from .conversions import tostr
+from .conversions import tofl, tostr
 from .globals import JPyMadGlobals
 from .tools.tfs import TfsTable, TfsSummary
 

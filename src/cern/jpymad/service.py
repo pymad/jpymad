@@ -24,7 +24,6 @@ Created on Nov 11, 2010
 '''
 from __future__ import absolute_import
 
-# py4j for communicating with jmad
 from .modeldef import JPyMadModelDefinition
 from .model import JPyMadModel
 from . import jmad as jm
