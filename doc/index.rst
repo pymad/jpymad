@@ -12,9 +12,9 @@ PyMad is a python API for `Mad-X <http://cern.ch/mad>`_.
 MadX is a software package to simulate particle accelerators and is used at CERN and all around the world.
 MadX has its own proprietary scripting language and is usually launched from the command line.
 
-The source is available at https://github.com/pymad/pymad
+The source is available at https://github.com/pymad/jpymad
 
-Bugs can be reported at https://github.com/pymad/pymad/issues
+Bugs can be reported at https://github.com/pymad/jpymad/issues
 
 Contents:
 =========
@@ -22,9 +22,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   installation/index
+   installation
    examples/index
-   api/index
+   api
 
 Indices and tables
 ==================

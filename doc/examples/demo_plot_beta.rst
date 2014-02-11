@@ -1,10 +1,12 @@
 Plot Beta
 =========
 
-The following example shows how to use pymad to plot the beta functions for the LHC for injection and collision optics::
+The following example shows how to use JPyMAD to plot the beta functions for the LHC for injection and collision optics:
+
+code-block:: python
 
     from matplotlib import pyplot
-    from cern import pymad
+    from cern.jpymad.service import JPymadService
 
     def plot_beta(model, postfix=''):
         # Run twiss on the model, optionally give name of file
@@ -21,50 +23,31 @@ The following example shows how to use pymad to plot the beta functions for the 
         pyplot.plot(result.s, result.bety, label=r'$\beta_y$')
         pyplot.savefig('beta' + postfix + '.eps')
 
-
-    # choose the mode
-    mode = 'jpymad'
-    #mode = 'cpymad'
-
     mdefname = 'lhc'
     opticname = 'injection'
 
-    #
-    # Here it starts
-    #
-    # create the PyMad Service
-    pms = pymad.init(mode)
+    # Here it starts:
+
+    # create the JPyMad Service
+    service = JPymadService()
 
     # print the name of all model definitions
-    print pms.mdefnames
-
-    # alternatively use convenience function
-    #pymad.ls_mdefs()
+    print(service.mdefnames)
 
     # get one model-definition
-    model = pms.create_model(mdefname)
-
-    # alternatively: create the model by name and get the model definition afterwards:
-    # model = pms.create_model(mdefname)
-    # mdef = model.mdef
-
-    # list the available (running) models
-    pymad.ls_models()
+    model = service.create_model(mdefname)
+    mdef = model.mdef
 
     # print a list of available sequences:
-    print mdef.seqnames
+    print(mdef.seqnames)
 
     plot_beta(model, '_inj')
 
     # list the available optics and set a new one
-    print mdef.opticnames
+    print(mdef.opticnames)
     model.set_optic(opticname)
 
     plot_beta(model, '_coll')
 
     # remove the model from the service:
-    pms.delete_model(model)
-
-    # and do a cleanup
-    pymad.cleanup()
-
+    service.delete_model(model)
