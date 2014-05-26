@@ -24,9 +24,7 @@ calculates the mean dispersion at the MBIs
 '''
 
 import numpy as np
-from jpymad.service import JPyMadService
-
-pms = None
+from cern.jpymad.service import JPyMadService
 
 def ensure_model(pms):
     '''

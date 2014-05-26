@@ -15,20 +15,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #-------------------------------------------------------------------------------
-def runj():
-    import jpymad
-    run(jpymad)
-def runc():
-    import cpymad
-    run(cpymad)
+'''
+Created on Nov 11, 2010
 
-def run(pymad):
-    l=pymad.model('lhc')
-    print("Available sequences: "+str(l.list_sequences()))
-    # would it be possible to implement
-    # same type of return here?
-    t,p=l.twiss('lhcb1')
+@author: kaifox
+'''
 
-if __name__=="__main__":
-    #runj()
-    runc()
+from cern.jpymad.service import JPyMadService
+
+pms = JPyMadService()
+
+mdefs = pms.get_mdefs()
+
+for mdef in mdefs:
+    print(mdef)
+
+

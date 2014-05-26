@@ -29,13 +29,13 @@ code-block:: python
     # Here it starts:
 
     # create the JPyMad Service
-    service = JPymadService()
+    pms = JPymadService()
 
     # print the name of all model definitions
-    print(service.mdefnames)
+    print(pms.mdefnames)
 
     # get one model-definition
-    model = service.create_model(mdefname)
+    model = pms.create_model(mdefname)
     mdef = model.mdef
 
     # print a list of available sequences:
@@ -50,4 +50,4 @@ code-block:: python
     plot_beta(model, '_coll')
 
     # remove the model from the service:
-    service.delete_model(model)
+    pms.delete_model(model)
