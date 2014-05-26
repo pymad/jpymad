@@ -14,3 +14,4 @@ install:
 # Actual tests:
 script:
   # we got nothing so far
+  - true
