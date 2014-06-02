@@ -25,6 +25,10 @@ from cern import cpymad
 class TestCpymad(object):
 
     def setUp(self):
+        import sys
+        print("here:", __file__)
+        print("there:", cpymad.__file__)
+        print("pathes:", sys.path)
         self.model = cpymad.load_model(self.name)
         self.model._cmd('option,-twiss_print')
 
