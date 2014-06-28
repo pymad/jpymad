@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Plot Beta &mdash; PyMad 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="PyMad 0.2.0 documentation" href="../index.html" />
+    <link rel="up" title="Examples" href="index.html" />
+    <link rel="next" title="PyMad API" href="../api.html" />
+    <link rel="prev" title="Examples" href="index.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="../index.html"><img src="../_static/pymad-logo-text.png" border="0" alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../api.html" title="PyMad API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Examples"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">home</a>|&nbsp;</li>
+        <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="index.html" accesskey="U">Examples</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Examples</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../api.html"
+                        title="next chapter">PyMad API</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/demo_plot_beta.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="plot-beta">
+<h1>Plot Beta<a class="headerlink" href="#plot-beta" title="Permalink to this headline">¶</a></h1>
+<p>The following example shows how to use JPyMAD to plot the beta functions for the LHC for injection and collision optics:</p>
+<p>code-block:: python</p>
+<blockquote>
+<div><p>from matplotlib import pyplot
+from cern.jpymad.service import JPymadService</p>
+<dl class="docutils">
+<dt>def plot_beta(model, postfix=&#8217;&#8216;):</dt>
+<dd><p class="first"># Run twiss on the model, optionally give name of file
+# where tfs table is stored
+result, summary = model.twiss(seqname=&#8217;lhcb1&#8217;,</p>
+<blockquote>
+<div>columns=[&#8216;name&#8217;, &#8216;s&#8217;, &#8216;betx&#8217;, &#8216;bety&#8217;],
+file=&#8217;lhcb1&#8217; + postfix + &#8216;.tfs&#8217;)</div></blockquote>
+<p class="last">pyplot.figure()
+# do something with the result (note, madx is still waiting!):
+pyplot.xlabel(&#8216;dist. from IP1&#8217;)
+pyplot.ylabel(r&#8217;$beta$&#8217;)
+pyplot.plot(result.s, result.betx, label=r&#8217;$beta_x$&#8217;)
+pyplot.plot(result.s, result.bety, label=r&#8217;$beta_y$&#8217;)
+pyplot.savefig(&#8216;beta&#8217; + postfix + &#8216;.eps&#8217;)</p>
+</dd>
+</dl>
+<p>mdefname = &#8216;lhc&#8217;
+opticname = &#8216;injection&#8217;</p>
+<p># Here it starts:</p>
+<p># create the JPyMad Service
+pms = JPymadService()</p>
+<p># print the name of all model definitions
+print(pms.mdefnames)</p>
+<p># get one model-definition
+model = pms.create_model(mdefname)
+mdef = model.mdef</p>
+<p># print a list of available sequences:
+print(mdef.seqnames)</p>
+<p>plot_beta(model, &#8216;_inj&#8217;)</p>
+<p># list the available optics and set a new one
+print(mdef.opticnames)
+model.set_optic(opticname)</p>
+<p>plot_beta(model, &#8216;_coll&#8217;)</p>
+<p># remove the model from the service:
+pms.delete_model(model)</p>
+</div></blockquote>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../api.html" title="PyMad API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Examples"
+             >previous</a> |</li>
+        <li><a href="../index.html">home</a>|&nbsp;</li>
+        <li><a href="../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="index.html" >Examples</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Y.I. Levinsen, K. Fuchsberger (CERN) .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

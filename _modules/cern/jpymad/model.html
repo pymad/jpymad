@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cern.jpymad.model &mdash; PyMad 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="PyMad 0.2.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="../../../index.html"><img src="../../../_static/pymad-logo-text.png" border="0" alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">home</a>|&nbsp;</li>
+        <li><a href="../../../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for cern.jpymad.model</h1><div class="highlight"><pre>
+<span class="c">#-------------------------------------------------------------------------------</span>
+<span class="c"># This file is part of PyMad.</span>
+<span class="c">#</span>
+<span class="c"># Copyright (c) 2011, CERN. All rights reserved.</span>
+<span class="c">#</span>
+<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c"># you may not use this file except in compliance with the License.</span>
+<span class="c"># You may obtain a copy of the License at</span>
+<span class="c">#</span>
+<span class="c"># 	http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c">#</span>
+<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c"># See the License for the specific language governing permissions and</span>
+<span class="c"># limitations under the License.</span>
+<span class="c">#-------------------------------------------------------------------------------</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on Nov 26, 2010</span>
+
+<span class="sd">@author: kaifox</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+
+<span class="kn">from</span> <span class="nn">.tools_optics</span> <span class="kn">import</span> <span class="n">get_values</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tools_twiss</span> <span class="k">as</span> <span class="n">tw</span>
+<span class="kn">from</span> <span class="nn">.modeldef</span> <span class="kn">import</span> <span class="n">JPyMadModelDefinition</span>
+
+<div class="viewcode-block" id="JPyMadModel"><a class="viewcode-back" href="../../../api.html#cern.jpymad.model.JPyMadModel">[docs]</a><span class="k">class</span> <span class="nc">JPyMadModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    a wrapper for jmad models</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jmad_model</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jmm</span> <span class="o">=</span> <span class="n">jmad_model</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">mdef</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">JPyMadModelDefinition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jmm</span><span class="o">.</span><span class="n">getModelDefinition</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">jmm</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">set_optic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opticname</span><span class="p">):</span>
+        <span class="n">opticdef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jmm</span><span class="o">.</span><span class="n">getModelDefinition</span><span class="p">()</span><span class="o">.</span><span class="n">getOpticsDefinition</span><span class="p">(</span><span class="n">opticname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">opticdef</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Optics definition with name &#39;&quot;</span> <span class="o">+</span> <span class="n">opticname</span> <span class="o">+</span> <span class="s">&quot;&#39; can not be found!&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">jmm</span><span class="o">.</span><span class="n">setActiveOpticsDefinition</span><span class="p">(</span><span class="n">opticdef</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">jmm</span><span class="o">.</span><span class="n">getActiveRange</span><span class="p">()</span><span class="o">.</span><span class="n">getElements</span><span class="p">():</span>
+            <span class="n">elements</span><span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">getName</span><span class="p">()]</span> <span class="o">=</span> <span class="n">element</span>
+        <span class="k">return</span> <span class="n">elements</span>
+
+    <span class="k">def</span> <span class="nf">get_optics_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">madxvarnames</span><span class="p">):</span>
+        <span class="n">optic</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">jmm</span><span class="o">.</span><span class="n">getOptics</span><span class="p">()</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">madxvarnames</span><span class="p">:</span>
+            <span class="nb">dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_values</span><span class="p">(</span><span class="n">optic</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">values</span>
+
+    <span class="k">def</span> <span class="nf">twiss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seqname</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[],</span> <span class="n">elementpatterns</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;.*&#39;</span><span class="p">],</span> <span class="nb">file</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">seqname</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;WARN: seqname=&#39;&quot;</span> <span class="o">+</span> <span class="n">seqname</span> <span class="o">+</span> <span class="s">&quot;&#39;. This will be ignored by the jpymad implementation. Instead the active sequence will be used.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;WARN: file=&#39;&quot;</span> <span class="o">+</span> <span class="n">seqname</span> <span class="o">+</span> <span class="s">&quot;&#39;. This is currently ignored by the jpymad implementation.&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tw</span><span class="o">.</span><span class="n">twiss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">jmm</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">elementpatterns</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">home</a>|&nbsp;</li>
+        <li><a href="../../../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Y.I. Levinsen, K. Fuchsberger (CERN) .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

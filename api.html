@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>PyMad API &mdash; PyMad 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="PyMad 0.2.0 documentation" href="index.html" />
+    <link rel="prev" title="Plot Beta" href="examples/demo_plot_beta.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="index.html"><img src="_static/pymad-logo-text.png" border="0" alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples/demo_plot_beta.html" title="Plot Beta"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">PyMad API</a><ul>
+<li><a class="reference internal" href="#module-jpymad">Module jpymad</a><ul>
+<li><a class="reference internal" href="#module-cern-pymad-abc-service">Module cern.pymad.abc.service</a></li>
+<li><a class="reference internal" href="#module-cern.jpymad.model">Module cern.jpymad.model</a></li>
+<li><a class="reference internal" href="#module-cern.jpymad.modeldef">Module cern.jpymad.modeldef</a></li>
+<li><a class="reference internal" href="#module-cern.jpymad.tools.tfs">Module cern.jpymad.tools.tfs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#additional-tools">Additional tools</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="examples/demo_plot_beta.html"
+                        title="previous chapter">Plot Beta</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="pymad-api">
+<h1>PyMad API<a class="headerlink" href="#pymad-api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-jpymad">
+<h2>Module jpymad<a class="headerlink" href="#module-jpymad" title="Permalink to this headline">¶</a></h2>
+<p>The jpymad package contains a lightweight python wrapper for JMad. In
+additions we have some tools which may be used more generally, found in
+<tt class="xref py py-mod docutils literal"><span class="pre">cern.jpymad.tools</span></tt></p>
+<div class="section" id="module-cern-pymad-abc-service">
+<h3>Module cern.pymad.abc.service<a class="headerlink" href="#module-cern-pymad-abc-service" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-cern.jpymad.model">
+<span id="module-cern-jpymad-model"></span><h3>Module cern.jpymad.model<a class="headerlink" href="#module-cern.jpymad.model" title="Permalink to this headline">¶</a></h3>
+<p>Created on Nov 26, 2010</p>
+<p>&#64;author: kaifox</p>
+<dl class="class">
+<dt id="cern.jpymad.model.JPyMadModel">
+<em class="property">class </em><tt class="descclassname">cern.jpymad.model.</tt><tt class="descname">JPyMadModel</tt><big>(</big><em>jmad_model</em><big>)</big><a class="reference internal" href="_modules/cern/jpymad/model.html#JPyMadModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cern.jpymad.model.JPyMadModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>a wrapper for jmad models</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cern.jpymad.modeldef">
+<span id="module-cern-jpymad-modeldef"></span><h3>Module cern.jpymad.modeldef<a class="headerlink" href="#module-cern.jpymad.modeldef" title="Permalink to this headline">¶</a></h3>
+<p>Created on 15 Aug 2011</p>
+<p>&#64;author: kfuchsbe</p>
+<dl class="class">
+<dt id="cern.jpymad.modeldef.JPyMadModelDefinition">
+<em class="property">class </em><tt class="descclassname">cern.jpymad.modeldef.</tt><tt class="descname">JPyMadModelDefinition</tt><big>(</big><em>jmmd</em><big>)</big><a class="reference internal" href="_modules/cern/jpymad/modeldef.html#JPyMadModelDefinition"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cern.jpymad.modeldef.JPyMadModelDefinition" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for jmad model-definitions</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-cern.jpymad.tools.tfs">
+<span id="module-cern-jpymad-tools-tfs"></span><h3>Module cern.jpymad.tools.tfs<a class="headerlink" href="#module-cern.jpymad.tools.tfs" title="Permalink to this headline">¶</a></h3>
+<p>Created on 16 Aug 2011
+.. module:: tfs
+.. moduleauthor:: kfuchsbe</p>
+<dl class="class">
+<dt id="cern.jpymad.tools.tfs.LookupDict">
+<em class="property">class </em><tt class="descclassname">cern.jpymad.tools.tfs.</tt><tt class="descname">LookupDict</tt><big>(</big><em>values</em><big>)</big><a class="reference internal" href="_modules/cern/jpymad/tools/tfs.html#LookupDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cern.jpymad.tools.tfs.LookupDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dictionary-like structure, which exposes the values of the keys also as attributes with the key names</p>
+<dl class="method">
+<dt id="cern.jpymad.tools.tfs.LookupDict.keys">
+<tt class="descname">keys</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/cern/jpymad/tools/tfs.html#LookupDict.keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cern.jpymad.tools.tfs.LookupDict.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to dictionary.keys()...</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cern.jpymad.tools.tfs.TfsSummary">
+<em class="property">class </em><tt class="descclassname">cern.jpymad.tools.tfs.</tt><tt class="descname">TfsSummary</tt><big>(</big><em>values</em><big>)</big><a class="reference internal" href="_modules/cern/jpymad/tools/tfs.html#TfsSummary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cern.jpymad.tools.tfs.TfsSummary" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to hold the summary table of a twiss with lowercase keys</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="cern.jpymad.tools.tfs.TfsTable">
+<em class="property">class </em><tt class="descclassname">cern.jpymad.tools.tfs.</tt><tt class="descname">TfsTable</tt><big>(</big><em>values</em><big>)</big><a class="reference internal" href="_modules/cern/jpymad/tools/tfs.html#TfsTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cern.jpymad.tools.tfs.TfsTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to hold the results of a twiss</p>
+<dl class="attribute">
+<dt id="cern.jpymad.tools.tfs.TfsTable.names">
+<tt class="descname">names</tt><a class="reference internal" href="_modules/cern/jpymad/tools/tfs.html#TfsTable.names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cern.jpymad.tools.tfs.TfsTable.names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the names of the elements in the twiss table</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="cern.jpymad.tools.tfs.tfs">
+<tt class="descclassname">cern.jpymad.tools.tfs.</tt><tt class="descname">tfs</tt><big>(</big><em>inputfile</em><big>)</big><a class="reference internal" href="_modules/cern/jpymad/tools/tfs.html#tfs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cern.jpymad.tools.tfs.tfs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns table and summary information
+as LookUp dictionaries. These extend on normal
+dictionary syntax. We recommend using this function
+for reading tfs files.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="cern.jpymad.tools.tfs.tfsDict">
+<tt class="descclassname">cern.jpymad.tools.tfs.</tt><tt class="descname">tfsDict</tt><big>(</big><em>inputfile</em><big>)</big><a class="reference internal" href="_modules/cern/jpymad/tools/tfs.html#tfsDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cern.jpymad.tools.tfs.tfsDict" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="function">
+<dt>
+<tt class="descclassname">cern.jpymad.tools.tfs.</tt><tt class="descname">tfsDict</tt><big>(</big><em>inputfile</em><big>)</big><a class="reference internal" href="_modules/cern/jpymad/tools/tfs.html#tfsDict"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<p>Read a tfs table and returns table/summary info</p>
+<p>The function takes in a tfs file. It will add
+all parameters into one dictionary, and the table
+into another dictionary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>inputfile</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; tfs file, full path</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">In case file path is not found</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple containing dictionaries (tfs table , summary)</td>
+</tr>
+</tbody>
+</table>
+<p>See also: <tt class="xref py py-mod docutils literal"><span class="pre">pymad.domain.tfs</span></tt></p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="additional-tools">
+<h2>Additional tools<a class="headerlink" href="#additional-tools" title="Permalink to this headline">¶</a></h2>
+<p>A collection of tools which can be useful to the end user are documented here.</p>
+<p>Simple function which loads a tfs file</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">cern.jpymad.tools.tfs</span> <span class="kn">import</span> <span class="n">tfs</span>
+<span class="n">table</span><span class="p">,</span><span class="n">summary</span> <span class="o">=</span> <span class="n">tfs</span><span class="p">(</span><span class="s">&#39;file.tfs&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can then access e.g. the horizontal beta in several equivalent ways</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">table</span><span class="o">.</span><span class="n">betx</span>
+<span class="n">table</span><span class="o">.</span><span class="n">BETX</span>
+<span class="n">table</span><span class="p">[</span><span class="s">&#39;betx&#39;</span><span class="p">]</span>
+<span class="n">table</span><span class="p">[</span><span class="s">&#39;BETX&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>All these four methods will return the same object. Naming scheme follows
+the convention from Mad-X.</p>
+<p>It is possible to get the list of available keys:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">table</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">summary</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples/demo_plot_beta.html" title="Plot Beta"
+             >previous</a> |</li>
+        <li><a href="index.html">home</a>|&nbsp;</li>
+        <li><a href="search.html">search</a>|&nbsp;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Y.I. Levinsen, K. Fuchsberger (CERN) .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

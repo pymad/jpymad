@@ -1,0 +1,287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>cern.jpymad.tools.tfs &mdash; PyMad 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="top" title="PyMad 0.2.0 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+
+<div style="background-color: white; text-align: left; padding: 10px 10px 15px 15px">
+<a href="../../../../index.html"><img src="../../../../_static/pymad-logo-text.png" border="0" alt="py4sci"/></a>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">home</a>|&nbsp;</li>
+        <li><a href="../../../../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for cern.jpymad.tools.tfs</h1><div class="highlight"><pre>
+<span class="c">#-------------------------------------------------------------------------------</span>
+<span class="c"># This file is part of PyMad.</span>
+<span class="c">#</span>
+<span class="c"># Copyright (c) 2011, CERN. All rights reserved.</span>
+<span class="c">#</span>
+<span class="c"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c"># you may not use this file except in compliance with the License.</span>
+<span class="c"># You may obtain a copy of the License at</span>
+<span class="c">#</span>
+<span class="c"># 	http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c">#</span>
+<span class="c"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c"># See the License for the specific language governing permissions and</span>
+<span class="c"># limitations under the License.</span>
+<span class="c">#-------------------------------------------------------------------------------</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Created on 16 Aug 2011</span>
+<span class="sd">.. module:: tfs</span>
+<span class="sd">.. moduleauthor:: kfuchsbe</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<div class="viewcode-block" id="LookupDict"><a class="viewcode-back" href="../../../../api.html#cern.jpymad.tools.tfs.LookupDict">[docs]</a><span class="k">class</span> <span class="nc">LookupDict</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39; A dictionary-like structure, which exposes the values of the keys also as attributes with the key names &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Initializes the class with the values.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        values -- A dictionary with strings as keys and lists as values</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># we store the values in a new dict internally, to unify the keys to lowercase</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_unify_key</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_val_or_raise_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+        <span class="n">ukey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unify_key</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ukey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Exposes the variables as attributes. This allows to use code like the following:</span>
+
+<span class="sd">        tfs = TfsTable(...)</span>
+<span class="sd">        print tfs.x</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_val_or_raise_error</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Emulates the [] operator, so that TfsTable can be used just like a dictionary.</span>
+<span class="sd">            The keys are considered case insensitive.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_val_or_raise_error</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">_unify_key</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+<div class="viewcode-block" id="LookupDict.keys"><a class="viewcode-back" href="../../../../api.html#cern.jpymad.tools.tfs.LookupDict.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">         Similar to dictionary.keys()...</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="TfsTable"><a class="viewcode-back" href="../../../../api.html#cern.jpymad.tools.tfs.TfsTable">[docs]</a><span class="k">class</span> <span class="nc">TfsTable</span><span class="p">(</span><span class="n">LookupDict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; A class to hold the results of a twiss &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="n">LookupDict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&#39;name&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="TfsTable.names"><a class="viewcode-back" href="../../../../api.html#cern.jpymad.tools.tfs.TfsTable.names">[docs]</a>    <span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns the names of the elements in the twiss table &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_names</span>
+</div></div>
+<div class="viewcode-block" id="TfsSummary"><a class="viewcode-back" href="../../../../api.html#cern.jpymad.tools.tfs.TfsSummary">[docs]</a><span class="k">class</span> <span class="nc">TfsSummary</span><span class="p">(</span><span class="n">LookupDict</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; A class to hold the summary table of a twiss with lowercase keys &#39;&#39;&#39;</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="tfs"><a class="viewcode-back" href="../../../../api.html#cern.jpymad.tools.tfs.tfs">[docs]</a><span class="k">def</span> <span class="nf">tfs</span><span class="p">(</span><span class="n">inputfile</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">     Returns table and summary information</span>
+<span class="sd">     as LookUp dictionaries. These extend on normal</span>
+<span class="sd">     dictionary syntax. We recommend using this function</span>
+<span class="sd">     for reading tfs files.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">table</span><span class="p">,</span><span class="n">params</span><span class="o">=</span><span class="n">tfsDict</span><span class="p">(</span><span class="n">inputfile</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">TfsTable</span><span class="p">(</span><span class="n">table</span><span class="p">),</span> <span class="n">TfsSummary</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="tfsDict"><a class="viewcode-back" href="../../../../api.html#cern.jpymad.tools.tfs.tfsDict">[docs]</a><span class="k">def</span> <span class="nf">tfsDict</span><span class="p">(</span><span class="n">inputfile</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    .. py:function:: tfsDict(inputfile)</span>
+
+<span class="sd">    Read a tfs table and returns table/summary info</span>
+
+<span class="sd">    The function takes in a tfs file. It will add</span>
+<span class="sd">    all parameters into one dictionary, and the table</span>
+<span class="sd">    into another dictionary.</span>
+
+<span class="sd">    :param string inputfile: tfs file, full path</span>
+<span class="sd">    :raises ValueError: In case file path is not found</span>
+<span class="sd">    :rtype: tuple containing dictionaries (tfs table , summary)</span>
+
+<span class="sd">    See also: :mod:`pymad.domain.tfs`</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">params</span><span class="o">=</span><span class="p">{}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">inputfile</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">inputfile</span><span class="o">+</span><span class="s">&#39;.tfs&#39;</span><span class="p">):</span>
+            <span class="n">inputfile</span><span class="o">+=</span><span class="s">&#39;.tfs&#39;</span>
+        <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">inputfile</span><span class="o">+</span><span class="s">&#39;.TFS&#39;</span><span class="p">):</span>
+            <span class="n">inputfile</span><span class="o">+=</span><span class="s">&#39;.TFS&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;ERROR: &quot;</span><span class="o">+</span><span class="n">inputfile</span><span class="o">+</span><span class="s">&quot; is not a valid file path&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span><span class="s">&#39;r&#39;</span><span class="p">)</span>
+    <span class="n">l</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;@&#39;</span><span class="p">:</span>
+            <span class="n">_addParameter</span><span class="p">(</span><span class="n">params</span><span class="p">,</span><span class="n">l</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;*&#39;</span><span class="p">:</span> <span class="c"># beginning of vector list...</span>
+            <span class="n">names</span><span class="o">=</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">table</span><span class="o">=</span><span class="n">_read_table</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="n">names</span><span class="p">)</span>
+        <span class="n">l</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">table</span><span class="p">,</span> <span class="n">params</span>
+
+<span class="c"># Add parameter to object</span>
+<span class="c">#</span>
+<span class="c"># Any line starting with an @ is a parameter.</span>
+<span class="c"># If that is found, this function should be called and given the line</span>
+<span class="c">#</span>
+<span class="c"># @param line The line from the file that should be added</span></div>
+<span class="k">def</span> <span class="nf">_addParameter</span><span class="p">(</span><span class="n">params</span><span class="p">,</span><span class="n">line</span><span class="p">):</span>
+    <span class="n">lname</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;</span><span class="si">%le</span><span class="s">&#39;</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="n">lname</span><span class="p">]</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;s&#39;</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="n">lname</span><span class="p">]</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">:</span>
+        <span class="n">params</span><span class="p">[</span><span class="n">lname</span><span class="p">]</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c">##</span>
+<span class="c"># Reads in a table in tfs format.</span>
+<span class="c"># Input the file stream at the location</span>
+<span class="c"># where the names of the columns have just been read.</span>
+<span class="k">def</span> <span class="nf">_read_table</span><span class="p">(</span><span class="n">fstream</span><span class="p">,</span><span class="n">names</span><span class="p">):</span>
+    <span class="n">l</span><span class="o">=</span><span class="n">fstream</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="n">types</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">table</span><span class="o">=</span><span class="p">{}</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;$&#39;</span><span class="p">:</span>
+            <span class="n">types</span><span class="o">=</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">elif</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">==</span><span class="s">&#39;#&#39;</span><span class="p">:</span>
+            <span class="n">l</span><span class="o">=</span><span class="n">fstream</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">n</span><span class="p">,</span><span class="n">el</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">()):</span>
+                <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
+        <span class="n">l</span><span class="o">=</span><span class="n">fstream</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span><span class="n">typ</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span><span class="n">types</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">typ</span><span class="o">==</span><span class="s">&#39;</span><span class="si">%le</span><span class="s">&#39;</span><span class="p">:</span>
+            <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">typ</span><span class="o">==</span><span class="s">&#39;</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">:</span>
+            <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">typ</span><span class="o">==</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()])):</span>
+                <span class="n">tlst</span><span class="o">=</span><span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tlst</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">tlst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">table</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="n">k</span><span class="p">]</span><span class="o">=</span><span class="n">tlst</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">table</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">home</a>|&nbsp;</li>
+        <li><a href="../../../../search.html">search</a>|&nbsp;</li>
+
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Y.I. Levinsen, K. Fuchsberger (CERN) .
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
