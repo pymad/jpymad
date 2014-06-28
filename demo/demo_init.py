@@ -15,14 +15,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #-------------------------------------------------------------------------------
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Nov 16 18:22:41 2010
+'''
+Created on Nov 11, 2010
 
 @author: kaifox
-"""
-from __future__ import absolute_import
+'''
 
-from .conversions import tofl
-from .conversions import tostr
-from .service import JPyMadService
+from cern.jpymad.service import JPyMadService
+
+pms = JPyMadService()
+
+mdefs = pms.get_mdefs()
+
+for mdef in mdefs:
+    print(mdef)
+
+

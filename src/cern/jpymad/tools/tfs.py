@@ -15,102 +15,171 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #-------------------------------------------------------------------------------
-"""
+'''
 Created on 16 Aug 2011
 .. module:: tfs
 .. moduleauthor:: kfuchsbe
-"""
+'''
+import numpy
+import os
 
+class LookupDict():
+    ''' A dictionary-like structure, which exposes the values of the keys also as attributes with the key names '''
 
-class LookupDict(object):
+    def __init__(self, values):
+        ''' Initializes the class with the values.
 
-    """
-    An attribute access view for a dictionary.
-
-    The dictionary entries are accessible both via attribute and key access.
-    Attribute (and key) access is always case insensitive.
-    """
-
-    def __init__(self, data):
-        """
-        Initialize the object with a copy of the data dictionary.
-
-        :param dict data: original data
-        """
-        # store the data in a new dict, to unify the keys to lowercase
-        self._data = dict()
-        for key, val in data.items():
-            self._data[self._unify_key(key)] = val
-
-    def __getstate__(self):
-        """Serialize to a primitive dict (pickle)."""
-        return self._data
-
-    def __setstate__(self, state):
-        """Deserialize from a primitive dict (unpickle)."""
-        self._data = state
+        Parameters:
+        values -- A dictionary with strings as keys and lists as values
+        '''
+        # we store the values in a new dict internally, to unify the keys to lowercase
+        self._values = dict()
+        for key, val in values.items():
+            self._values[self._unify_key(key)] = val
 
     def __iter__(self):
-        """Return iterator over the (lowercase) keys."""
-        return iter(self._data)
+        return iter(self._values)
+
+    def _get_val_or_raise_error(self, key, error):
+        ukey = self._unify_key(key)
+
+        if ukey in self._values:
+            return self._values[key]
+        else:
+            raise(error)
 
     def __getattr__(self, name):
-        """
-        Return value associated to the given key.
+        ''' Exposes the variables as attributes. This allows to use code like the following:
 
-        :param str name: case-insensitive key
-        """
-        try:
-            return self[name]
-        except KeyError:
-            raise AttributeError(name)
+        tfs = TfsTable(...)
+        print tfs.x
+
+        '''
+        return self._get_val_or_raise_error(name, AttributeError())
 
     def __getitem__(self, key):
-        """
-        Return value associated to the given key.
-
-        :param str key: case-insensitive key
-        """
-        return self._data[self._unify_key(key)]
+        ''' Emulates the [] operator, so that TfsTable can be used just like a dictionary.
+            The keys are considered case insensitive.
+        '''
+        return self._get_val_or_raise_error(key, KeyError())
 
     def _unify_key(self, key):
-        """
-        Convert key to lowercase.
-
-        :param str key: case-insensitive key
-        """
         return key.lower()
 
     def keys(self):
-        """
-        Return iterable over all keys in the dictionary.
-        """
-        return self._data.keys()
+        '''
+         Similar to dictionary.keys()...
+        '''
+        return self._values.keys()
 
 
 class TfsTable(LookupDict):
+    ''' A class to hold the results of a twiss '''
+    def __init__(self, values):
+        LookupDict.__init__(self, values)
+        if 'name' in self._values:
+            self._names = self._values['name']
 
-    """Result table of a TWISS calculation with case-insensitive keys."""
-
-    def __init__(self, data):
-        """
-        Initialize the object with a copy of the data dictionary.
-
-        :param dict data: original data
-
-        If not present in the original data, the key 'names' is aliased to
-        'name', whose value contains a list of all element node names.
-        """
-        LookupDict.__init__(self, data)
-        try:
-            self._data.setdefault('names', self._data['name'])
-        except KeyError:
-            pass
-
+    @property
+    def names(self):
+        ''' Returns the names of the elements in the twiss table '''
+        return self._names
 
 class TfsSummary(LookupDict):
-
-    """Summary table of a TWISS with case-insensitive keys."""
-
+    ''' A class to hold the summary table of a twiss with lowercase keys '''
     pass
 
+
+def tfs(inputfile):
+    '''
+     Returns table and summary information
+     as LookUp dictionaries. These extend on normal
+     dictionary syntax. We recommend using this function
+     for reading tfs files.
+    '''
+    table,params=tfsDict(inputfile)
+    return TfsTable(table), TfsSummary(params)
+
+def tfsDict(inputfile):
+    '''
+    .. py:function:: tfsDict(inputfile)
+
+    Read a tfs table and returns table/summary info
+
+    The function takes in a tfs file. It will add
+    all parameters into one dictionary, and the table
+    into another dictionary.
+
+    :param string inputfile: tfs file, full path
+    :raises ValueError: In case file path is not found
+    :rtype: tuple containing dictionaries (tfs table , summary)
+
+    See also: :mod:`pymad.domain.tfs`
+    '''
+    params={}
+    if not os.path.isfile(inputfile):
+        if os.path.isfile(inputfile+'.tfs'):
+            inputfile+='.tfs'
+        elif os.path.isfile(inputfile+'.TFS'):
+            inputfile+='.TFS'
+        else:
+            raise ValueError("ERROR: "+inputfile+" is not a valid file path")
+    f=open(inputfile,'r')
+    l=f.readline()
+    while(l):
+        if l.strip()[0]=='@':
+            _addParameter(params,l)
+        if l.strip()[0]=='*': # beginning of vector list...
+            names=l.split()[1:]
+            table=_read_table(f,names)
+        l=f.readline()
+    return table, params
+
+# Add parameter to object
+#
+# Any line starting with an @ is a parameter.
+# If that is found, this function should be called and given the line
+#
+# @param line The line from the file that should be added
+def _addParameter(params,line):
+    lname=line.split()[1].lower()
+    if line.split()[2]=='%le':
+        params[lname]=float(line.split()[3])
+    if line.split()[2][-1]=='s':
+        params[lname]=line.split('"')[1]
+    if line.split()[2]=='%d':
+        params[lname]=int(line.split()[3])
+
+##
+# Reads in a table in tfs format.
+# Input the file stream at the location
+# where the names of the columns have just been read.
+def _read_table(fstream,names):
+    l=fstream.readline()
+    types=[]
+    table={}
+    for n in names:
+        table[n.lower()]=[]
+    while(l):
+        if l.strip()[0]=='$':
+            types=l.split()[1:]
+        elif l.strip()[0]=='#':
+            l=fstream.readline()
+            continue
+        else:
+            for n,el in zip(names,l.split()):
+                table[n.lower()].append(el)
+        l=fstream.readline()
+    for n,typ in zip(names,types):
+        if typ=='%le':
+            table[n.lower()]=numpy.array(table[n.lower()],dtype=float)
+        elif typ=='%d':
+            table[n.lower()]=numpy.array(table[n.lower()],dtype=int)
+        elif typ=='%s':
+            for k in range(len(table[n.lower()])):
+                tlst=table[n.lower()][k].split('"')
+                if len(tlst)==1:
+                    table[n.lower()][k]=tlst[0]
+                else:
+                    table[n.lower()][k]=tlst[1]
+    return table

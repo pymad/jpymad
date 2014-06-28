@@ -1,44 +1,37 @@
-PyMAD
------
+JPyMAD
+------
 
-PyMAD is a python wrapper for MAD-X_ (Methodical Accelerator Design). It can
-be used in either of two modes:
+JPyMAD is a python wrapper for MAD-X_ (Methodical Accelerator Design). It
+uses uses JMad_ via Py4J_ which then accesses the MAD-X_ library.
 
-- cpymad uses Cython_ to access the Mad-X_ library directly
-- jpymad uses JMad_ via Py4J_ which then accesses the Mad-X_ library
+There is also cpymad_ uses Cython_ to access the MAD-X_ library directly.
 
 .. _MAD-X: http://madx.web.cern.ch/madx/
 .. _Cython: http://cython.org/
 .. _JMad: http://jmad.web.cern.ch/jmad/
 .. _Py4J: http://py4j.sourceforge.net/
+.. _cpymad: http://cern.ch/cpymad
 
 Prerequisites
 ~~~~~~~~~~~~~
 
-General
-=======
-
-- python with numpy
-
-CPyMAD
-======
-
-- Cython_
-- gfortran or similar
-- MAD-X_ shared library
-- ``madextern.h`` in your include path
-
-JPyMAD
-======
-
-- Java
 - JMad_
+- numpy
 - Py4J_
 
 Installation
 ~~~~~~~~~~~~
 
-Further instructions are available at http://cern.ch/pymad/installation.
+Installation might be as easy as running
+
+.. code-block:: bash
+
+    python setup.py install
+
+from the source repository.
+
+
+Further instructions are available at http://cern.ch/jpymad/installation.
 
 
 Usage
@@ -48,12 +41,10 @@ Usage
 
     # Once installed this is a nice example showing current
     # usability (run from examples folder):
-    from cern import pymad
+    from cern.jpymad import JPyMadService
 
-    # select backend,
-    # 'cpymad' is currently default if nothing is provided
-    # Returns a pymad.service object
-    pms = pymad.init('jpymad')
+    # the service object is responsible for locating and instanciating models
+    pms = JPyMadService()
 
     # Create a model:
     pm = pms.create_model('lhc')
@@ -68,7 +59,7 @@ Usage
     plt.plot(twiss.s, twiss.betx)
 
 
-See http://cern.ch/pymad/ for further documentation.
+See http://cern.ch/jpymad/ for further documentation.
 
 
 Development guidelines
